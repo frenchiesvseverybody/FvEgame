@@ -37,23 +37,40 @@
 			image-rendering: pixelated;
 			-ms-interpolation-mode: nearest-neighbor;
 		}
+
+		input[type="text"] {
+			/* enlarge by 16/12 = 133.33% */
+			border-radius: 6.666666667px;
+			font-size: 16px;
+			line-height: 26.666666667px;
+			padding: 6.666666667px;
+			width: 133.333333333%;
+
+			/* scale down by 12/16 = 75% */
+			transform: scale(0.75);
+			transform-origin: left top;
+
+			/* remove extra white space */
+			margin-bottom: -10px;
+			margin-right: -33.333333333%;
+		}
 	</style>
 </head>
 
 <body>
 	<div id="gameContainer">
 		<canvas id="unity-canvas" data-pixel-art=""></canvas>
-		<script src="Build/V0.3.loader.js"></script>
+		<script src="Build/V0.4.loader.js"></script>
 		<script>
 			var canvas = document.querySelector("#unity-canvas");
 			var config = {
-				dataUrl: "Build/V0.3.data",
-				frameworkUrl: "Build/V0.3.framework.js",
-				codeUrl: "Build/V0.3.wasm",
+				dataUrl: "Build/V0.4.data",
+				frameworkUrl: "Build/V0.4.framework.js",
+				codeUrl: "Build/V0.4.wasm",
 				streamingAssetsUrl: "StreamingAssets",
 				companyName: "chadmaghielse",
 				productName: "Frenchies Vs Everybody",
-				productVersion: "0.3",
+				productVersion: "0.4",
 			};
 			var scaleToFit;
 			try {
@@ -164,7 +181,7 @@
 				// Mobile device style: fill the whole browser client area with the game canvas:
 				const meta = document.createElement('meta');
 				meta.name = 'viewport';
-				meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+				meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes, interactive-widget=resizes-content';
 				document.getElementsByTagName('head')[0].appendChild(meta);
 			}
 		</script>
