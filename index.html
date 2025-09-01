@@ -60,17 +60,17 @@
 <body>
 	<div id="gameContainer">
 		<canvas id="unity-canvas" data-pixel-art=""></canvas>
-		<script src="Build/V0.4.loader.js"></script>
+		<script src="Build/V0.5.loader.js"></script>
 		<script>
 			var canvas = document.querySelector("#unity-canvas");
 			var config = {
-				dataUrl: "Build/V0.4.data",
-				frameworkUrl: "Build/V0.4.framework.js",
-				codeUrl: "Build/V0.4.wasm",
+				dataUrl: "Build/V0.5.data",
+				frameworkUrl: "Build/V0.5.framework.js",
+				codeUrl: "Build/V0.5.wasm",
 				streamingAssetsUrl: "StreamingAssets",
 				companyName: "chadmaghielse",
 				productName: "Frenchies Vs Everybody",
-				productVersion: "0.4",
+				productVersion: "0.5",
 			};
 			var scaleToFit;
 			try {
@@ -129,9 +129,13 @@
 				input.type = "file";
 				input.accept = "image/*";
 
+				// Track whether a file was picked
+				let filePicked = false;
+
 				input.onchange = function (event) {
 					var file = event.target.files[0];
 					if (file) {
+						filePicked = true;
 						var reader = new FileReader();
 						reader.onload = function (e) {
 							var img = new Image();
@@ -173,6 +177,17 @@
 						reader.readAsDataURL(file);
 					}
 				};
+
+				// Detect if dialog closed without selection
+				window.addEventListener("focus", function onFocus() {
+					setTimeout(() => {
+						if (!filePicked) {
+							console.log("User canceled file selection.");
+							MyGameInstance.SendMessage("FileManager", "OnFileCanceled", "");
+						}
+						window.removeEventListener("focus", onFocus);
+					}, 200); // delay to let onchange run first
+				});
 
 				input.click();
 			}
